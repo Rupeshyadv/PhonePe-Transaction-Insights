@@ -4,3 +4,4 @@ seaborn
 plotly
 mysql-connector-python
 streamlit
+altair>=5.0.0
