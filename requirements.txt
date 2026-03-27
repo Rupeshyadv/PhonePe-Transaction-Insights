@@ -1,7 +1,5 @@
 pandas
-matplotlib
-seaborn
 plotly
 mysql-connector-python
 streamlit
-altair>=5.0.0
+altair==4.2.2
