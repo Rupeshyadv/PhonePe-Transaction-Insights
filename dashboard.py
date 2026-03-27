@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import mysql.connector
 import plotly.express as px
 
 # CONFIG
@@ -46,24 +45,17 @@ st.markdown("""
 ### 🚀 Digital Payments Intelligence Panel
 """)
 
-# DB
-conn = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="RRyy1234@$",
-    database="phonepe_db"
-)
-
 # LOAD
 @st.cache_data
 def load():
-    df_trans = pd.read_sql("SELECT * FROM aggregated_transaction", conn)
-    df_user = pd.read_sql("SELECT * FROM aggregated_user", conn)
-    df_map_user = pd.read_sql("SELECT * FROM map_user", conn)
-    df_ins = pd.read_sql("SELECT * FROM aggregated_insurance", conn)
+    df_trans = pd.read_csv("aggregated_transaction.csv")
+    df_user = pd.read_csv("aggregated_user.csv")
+    df_map_user = pd.read_csv("map_user.csv")
+    df_ins = pd.read_csv("aggregated_insurance.csv")
     return df_trans, df_user, df_map_user, df_ins
 
 df_trans, df_user, df_map_user, df_ins = load()
+
 
 # SIDEBAR
 st.sidebar.markdown("## 🎯 Filters")
