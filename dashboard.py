@@ -114,6 +114,18 @@ with tab1:
 
     fig_trend = px.line(trend, x="time", y="transaction_amount", title="Transaction Growth")
     st.plotly_chart(fig_trend, use_container_width=True)
+    
+    st.markdown("### 🧠 Key Insight")
+
+    latest = trend.iloc[-1]["transaction_amount"]
+    previous = trend.iloc[-2]["transaction_amount"]
+
+    growth = ((latest - previous) / previous) * 100
+
+    if growth > 0:
+        st.success(f"Transactions increased by {growth:.2f}% compared to last quarter — indicating strong growth momentum.")
+    else:
+        st.error(f"Transactions dropped by {abs(growth):.2f}% — potential concern in user activity.")
 
     # Type Distribution
     df_type = df_trans.groupby("transaction_type")["transaction_amount"].sum().reset_index()
@@ -139,7 +151,7 @@ with tab3:
     fig_device = px.pie(df_device.head(10), values="user_count", names="brand")
     st.plotly_chart(fig_device, use_container_width=True)
 
-    # Engagement FIXED
+    # Engagement
     df_eng = df_map_user.groupby("state").agg({
         "registered_users": "sum",
         "app_opens": "sum"
@@ -156,6 +168,15 @@ with tab3:
                      x="state", y="engagement")
 
     st.plotly_chart(fig_eng, use_container_width=True)
+    
+    top_state = df_eng.sort_values(by="engagement", ascending=False).iloc[0]
+
+    st.info(f"""
+    🔥 {top_state['state']} shows the highest engagement.
+
+    👉 Users here are significantly more active compared to other regions.
+    👉 This state can be used as a benchmark for improving engagement strategies elsewhere.
+    """)
 
 # TAB 4
 with tab4:
@@ -179,3 +200,12 @@ with tab4:
                           x="state", y="transaction_amount")
 
     st.plotly_chart(fig_ins_state, use_container_width=True)
+    
+    top_ins = df_ins_state.sort_values(by="transaction_amount", ascending=False).iloc[0]
+
+    st.info(f"""
+    🛡️ {top_ins['state']} leads in insurance adoption.
+
+    👉 Indicates strong awareness and trust in digital insurance services.
+    👉 This region can be leveraged to expand advanced financial products.
+    """)
